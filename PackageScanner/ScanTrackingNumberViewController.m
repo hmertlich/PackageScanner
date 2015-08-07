@@ -99,7 +99,7 @@
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeCode128Code]) {
             // If the found metadata is equal to the QR code metadata then update the status label's text,
             // stop reading and change the bar button item's title and the flag's value.
-            if ([metadataObj stringValue].length >= 18) {
+            if ([metadataObj stringValue].length >=18) {
 
                 self.trackingNumberString = [metadataObj stringValue];
                 //             If the audio player is not nil, then play the sound effect.

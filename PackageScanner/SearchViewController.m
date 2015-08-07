@@ -8,12 +8,14 @@
 
 #import "SearchViewController.h"
 #import "SearchResultsViewController.h"
+#import "SearchViewDataSource.h"
+#import "SearchViewDataSourceController.h"
 
 @interface SearchViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (weak, nonatomic) IBOutlet UITextField *returnAddressTextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
-@property (weak, nonatomic) IBOutlet UITextField *toAddressTextField;
+
 
 @end
 
@@ -22,6 +24,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,19 +41,38 @@
     return YES;
 }
 - (IBAction)searchButtonPressed:(id)sender {
-    PFQuery *query = [PFQuery queryWithClassName:@"Ticket"];
+    
+#pragma error-Check the tracking text info.
+    
+    if ([self.trackingNumberTextField.text isEqualToString:@""]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please make sure a search field is entered" preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+        
+        [self.tabBarController presentViewController:alert animated:YES completion:nil];
+        return;
+
+    }
+    
+    [[SearchViewDataSourceController sharedInstance]queryAllTicketDataWithDate:self.datePicker.date andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
+        
+        [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
+    
+    }];
+        
+    
    
 }
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString: @"searchResultsSegue"]) {
-        
-        
-        //specifies an instance of the view we are segueing to.
-        SearchResultsViewController *searchResultsViewController = segue.destinationViewController;
 
-        
-    }
+
+- (IBAction)clearButtonTapped:(id)sender {
+    self.trackingNumberTextField.text = @"";
+    self.datePicker.date = [NSDate date];
+}
+
+-(void)dismissKeyboard {
+   
+    [self.trackingNumberTextField resignFirstResponder];
 }
 
 /*

@@ -23,15 +23,8 @@
     });
     return sharedInstance;
 }
--(void)addTicket:(Ticket *)ticket{
-    NSMutableArray *mutableTickets = [self.tickets mutableCopy];
-    
-    [mutableTickets addObject:ticket];
-    
-    self.tickets = mutableTickets;
-}
 
--(void)removeTicket:(Ticket *)ticket{
++(void)removeTicket:(Ticket *)ticket{
     
 }
 @end

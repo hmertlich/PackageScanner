@@ -10,7 +10,7 @@
 
 @interface DetailTicketViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *toAddressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *fromAddressLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *whoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -32,8 +32,6 @@
 }
 
 - (void)updateWithTicket:(Ticket *)ticket{
-    self.toAddressLabel.text = self.ticket.toAddress;
-    self.fromAddressLabel.text = self.ticket.fromAddress;
     self.locationLabel.text = self.ticket.location;
     self.whoLabel.text = self.ticket.employee;
     self.dateLabel.text = [self convertDatetoString:self.ticket.timeStamp];

@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "TicketController.h"
 
-@interface SearchResultsViewController : ViewController
+
+@interface SearchResultsViewController : ViewController 
+
 
 @property(strong,nonatomic)TicketController *ticketController;
 

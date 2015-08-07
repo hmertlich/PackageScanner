@@ -13,14 +13,11 @@
 
 @property (strong, nonatomic, readonly)NSArray *tickets;
 
-//Create
--(void) addTicket:(Ticket *)ticket;
-
 //Read(Singleton)
 + (TicketController *)sharedInstance;
 
 //Remove
--(void) removeTicket:(Ticket *)ticket;
++(void) removeTicket:(Ticket *)ticket;
 
 
 @end
