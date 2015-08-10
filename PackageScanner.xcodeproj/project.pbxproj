@@ -28,7 +28,6 @@
 		246FEBA01B73F34C00611725 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 246FEB9F1B73F34C00611725 /* libsqlite3.dylib */; };
 		246FEBA31B74222A00611725 /* SearchViewDataSourceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 246FEBA21B74222A00611725 /* SearchViewDataSourceController.m */; };
 		24C0A1791B67FD2A001DBB24 /* DetailTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */; };
-		24C0A17C1B67FD6E001DBB24 /* UpdateTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */; };
 		24C0A17F1B6828DC001DBB24 /* SearchViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */; };
 		24C0A1821B6846D8001DBB24 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A1811B6846D8001DBB24 /* SearchResultsViewController.m */; };
 		24E171F71B645044003F2102 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E171F61B645044003F2102 /* main.m */; };
@@ -79,8 +78,6 @@
 		246FEBA21B74222A00611725 /* SearchViewDataSourceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewDataSourceController.m; sourceTree = "<group>"; };
 		24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTicketViewController.h; sourceTree = "<group>"; };
 		24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTicketViewController.m; sourceTree = "<group>"; };
-		24C0A17A1B67FD6E001DBB24 /* UpdateTicketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateTicketViewController.h; sourceTree = "<group>"; };
-		24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateTicketViewController.m; sourceTree = "<group>"; };
 		24C0A17D1B6828DC001DBB24 /* SearchViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewDataSource.h; sourceTree = "<group>"; };
 		24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewDataSource.m; sourceTree = "<group>"; };
 		24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
@@ -252,8 +249,6 @@
 			children = (
 				24E171FB1B645044003F2102 /* ViewController.h */,
 				24E171FC1B645044003F2102 /* ViewController.m */,
-				24C0A17A1B67FD6E001DBB24 /* UpdateTicketViewController.h */,
-				24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */,
 				24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */,
 				24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */,
 				24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */,
@@ -379,7 +374,6 @@
 				24C0A1821B6846D8001DBB24 /* SearchResultsViewController.m in Sources */,
 				24E1721C1B6452AB003F2102 /* SearchViewController.m in Sources */,
 				242A878A1B66980E00960E85 /* TicketController.m in Sources */,
-				24C0A17C1B67FD6E001DBB24 /* UpdateTicketViewController.m in Sources */,
 				24C0A17F1B6828DC001DBB24 /* SearchViewDataSource.m in Sources */,
 				24C0A1791B67FD2A001DBB24 /* DetailTicketViewController.m in Sources */,
 				24E171F71B645044003F2102 /* main.m in Sources */,

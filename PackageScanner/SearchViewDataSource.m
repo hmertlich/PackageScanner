@@ -17,19 +17,19 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
     
     if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
     }
     
     Ticket *ticket = [[Ticket alloc]initWithDictionary:[[SearchViewDataSourceController sharedInstance].searchResults objectAtIndex:indexPath.row]];
     
-    cell.textLabel.text = ticket.trackingNumber;
-    
     NSString *ticketDate = [ticket convertDatetoString:ticket.timeStamp];
     
     cell.detailTextLabel.text = ticketDate;
+    cell.textLabel.text = ticket.trackingNumber;
     
     return cell;
 }

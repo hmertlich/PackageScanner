@@ -30,10 +30,10 @@
     PFQuery *getTickets = [PFQuery queryWithClassName:[Ticket parseClassName]];
     [getTickets whereKey:@"TimeStamp" greaterThanOrEqualTo:date2];
     [getTickets whereKey:@"TimeStamp" lessThanOrEqualTo:date];
-    [getTickets whereKey:@"TrackingNumber" containsString:trackingNumber];
+//    [getTickets whereKey:@"TrackingNumber" containsString:trackingNumber];
+    [getTickets orderByAscending:@"TimeStamp"];
     [getTickets findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error){
         NSLog(@"%@",results);
-        
         
         [SearchViewDataSourceController sharedInstance].searchResults = [results mutableCopy];
         completion();

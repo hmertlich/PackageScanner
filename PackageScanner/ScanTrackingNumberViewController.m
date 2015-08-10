@@ -58,7 +58,7 @@
     [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeCode128Code]];
     
     // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
-    self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
+    self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
     [self.videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     [self.videoPreviewLayer setFrame:self.viewPreview.layer.bounds];
     [self.viewPreview.layer addSublayer:self.videoPreviewLayer];

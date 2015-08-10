@@ -13,13 +13,16 @@
 
 @interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *carrierTextField;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
+
 @property (weak, nonatomic) IBOutlet UILabel *employeeLabel;
-@property (weak, nonatomic) IBOutlet UIPickerView *LocationPicker;
+@property (weak, nonatomic) IBOutlet UIPickerView *locationPicker;
 @property (weak, nonatomic) IBOutlet UITextField *optionalLocationTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
 
-@property (strong,nonatomic) NSArray *locations;
+@property (strong, nonatomic) NSArray *locations;
+@property (strong, nonatomic) NSArray *carriers;
+
 @end
 
 @implementation NewTicketViewController
@@ -33,14 +36,26 @@
     
     [self.view addGestureRecognizer:tap];
     
+    
+    self.locationPicker.delegate = self;
+    
+    //set contents of pickerView
+    self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
+    
+    self.carriers = @[@"UPS", @"FedExGround", @"FedExAir", @"USPS", @"Other"];
+    
+    self.carrierSegmentedControl = [[UISegmentedControl alloc]initWithItems:self.carriers];
+    
+
+}
+
+-(void)viewWillAppear:(BOOL)animated{
     //set timeStamp
     Ticket *ticket = [Ticket new];
     NSString *date = [ticket convertDatetoString:[NSDate date]];
     self.timeStampLabel.text = date;
-    
-    //set contents of pickerView
-    self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
 }
+
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     //One column
@@ -71,7 +86,6 @@
 }
 
 - (IBAction)clearButtonTapped:(id)sender {
-    self.carrierTextField.text = @"";
     self.trackingNumberTextField.text = @"";
     self.optionalLocationTextField.text = @"";
 }
@@ -87,9 +101,7 @@
 
 - (IBAction)saveButtonPressed:(id)sender {
     
-    if ([self.carrierTextField.text isEqualToString:@""] ||
-        [self.trackingNumberTextField.text isEqualToString:@""] ||
-        [self.trackingNumberTextField.text isEqualToString:@""])
+    if ([self.trackingNumberTextField.text isEqualToString:@""])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please make sure all fields are entered" preferredStyle:UIAlertControllerStyleAlert];
         
@@ -98,11 +110,18 @@
         [self.tabBarController presentViewController:alert animated:YES completion:nil];
         return;
     }
+    //grab the index that is currently selected by the locationPicker
+    NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
+    
+    //grab the index that is currently selected by the segmentedControl
+     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
     
     PFObject *newTicket = [PFObject objectWithClassName:[Ticket parseClassName]];
     newTicket[@"TimeStamp"] = [NSDate date];
+    newTicket[@"Carrier"] = [self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
     newTicket[@"Employee"] = self.employeeLabel.text;
-    newTicket[@"Location"] = [self.locations objectAtIndex:0];
+    newTicket[@"Location"] = [self.locations objectAtIndex:selectedLocation];
+    newTicket[@"SubLocation"] = self.optionalLocationTextField.text;
     newTicket[@"TrackingNumber"] = self.trackingNumberTextField.text;
     [newTicket saveInBackground];
     
@@ -120,7 +139,6 @@
     
     [self.trackingNumberTextField resignFirstResponder];
     [self.optionalLocationTextField resignFirstResponder];
-    [self.carrierTextField resignFirstResponder];
     [self.trackingNumberTextField resignFirstResponder];
 }
 
