@@ -26,8 +26,8 @@
 		246FEB9C1B73F33700611725 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 246FEB9B1B73F33700611725 /* SystemConfiguration.framework */; };
 		246FEB9E1B73F34000611725 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 246FEB9D1B73F34000611725 /* libz.dylib */; };
 		246FEBA01B73F34C00611725 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 246FEB9F1B73F34C00611725 /* libsqlite3.dylib */; };
+		246FEBA31B74222A00611725 /* SearchViewDataSourceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 246FEBA21B74222A00611725 /* SearchViewDataSourceController.m */; };
 		24C0A1791B67FD2A001DBB24 /* DetailTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */; };
-		24C0A17C1B67FD6E001DBB24 /* UpdateTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */; };
 		24C0A17F1B6828DC001DBB24 /* SearchViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */; };
 		24C0A1821B6846D8001DBB24 /* SearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24C0A1811B6846D8001DBB24 /* SearchResultsViewController.m */; };
 		24E171F71B645044003F2102 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E171F61B645044003F2102 /* main.m */; };
@@ -74,10 +74,10 @@
 		246FEB9B1B73F33700611725 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		246FEB9D1B73F34000611725 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		246FEB9F1B73F34C00611725 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		246FEBA11B74222A00611725 /* SearchViewDataSourceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewDataSourceController.h; sourceTree = "<group>"; };
+		246FEBA21B74222A00611725 /* SearchViewDataSourceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewDataSourceController.m; sourceTree = "<group>"; };
 		24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTicketViewController.h; sourceTree = "<group>"; };
 		24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTicketViewController.m; sourceTree = "<group>"; };
-		24C0A17A1B67FD6E001DBB24 /* UpdateTicketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateTicketViewController.h; sourceTree = "<group>"; };
-		24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateTicketViewController.m; sourceTree = "<group>"; };
 		24C0A17D1B6828DC001DBB24 /* SearchViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewDataSource.h; sourceTree = "<group>"; };
 		24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewDataSource.m; sourceTree = "<group>"; };
 		24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsViewController.h; sourceTree = "<group>"; };
@@ -153,6 +153,8 @@
 				242A87891B66980E00960E85 /* TicketController.m */,
 				24C0A17D1B6828DC001DBB24 /* SearchViewDataSource.h */,
 				24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */,
+				246FEBA11B74222A00611725 /* SearchViewDataSourceController.h */,
+				246FEBA21B74222A00611725 /* SearchViewDataSourceController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -247,8 +249,6 @@
 			children = (
 				24E171FB1B645044003F2102 /* ViewController.h */,
 				24E171FC1B645044003F2102 /* ViewController.m */,
-				24C0A17A1B67FD6E001DBB24 /* UpdateTicketViewController.h */,
-				24C0A17B1B67FD6E001DBB24 /* UpdateTicketViewController.m */,
 				24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */,
 				24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */,
 				24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */,
@@ -312,6 +312,7 @@
 				TargetAttributes = {
 					24E171F01B645044003F2102 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 7QB3F65TJ3;
 					};
 					24E172091B645044003F2102 = {
 						CreatedOnToolsVersion = 6.4;
@@ -367,12 +368,12 @@
 				246B2D2A1B703E1900CE8A08 /* ScanTrackingNumberViewController.m in Sources */,
 				24E1F6BB1B65DF7A0077EB44 /* Ticket.m in Sources */,
 				24E171FD1B645044003F2102 /* ViewController.m in Sources */,
+				246FEBA31B74222A00611725 /* SearchViewDataSourceController.m in Sources */,
 				24E1721F1B645648003F2102 /* NewTicketViewController.m in Sources */,
 				24E171FA1B645044003F2102 /* AppDelegate.m in Sources */,
 				24C0A1821B6846D8001DBB24 /* SearchResultsViewController.m in Sources */,
 				24E1721C1B6452AB003F2102 /* SearchViewController.m in Sources */,
 				242A878A1B66980E00960E85 /* TicketController.m in Sources */,
-				24C0A17C1B67FD6E001DBB24 /* UpdateTicketViewController.m in Sources */,
 				24C0A17F1B6828DC001DBB24 /* SearchViewDataSource.m in Sources */,
 				24C0A1791B67FD2A001DBB24 /* DetailTicketViewController.m in Sources */,
 				24E171F71B645044003F2102 /* main.m in Sources */,
@@ -501,6 +502,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PackageScanner",
@@ -509,6 +512,7 @@
 				INFOPLIST_FILE = PackageScanner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -516,6 +520,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PackageScanner",
@@ -524,6 +530,7 @@
 				INFOPLIST_FILE = PackageScanner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

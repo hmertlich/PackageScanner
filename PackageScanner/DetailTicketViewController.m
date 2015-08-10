@@ -9,12 +9,14 @@
 #import "DetailTicketViewController.h"
 
 @interface DetailTicketViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *toAddressLabel;
-@property (weak, nonatomic) IBOutlet UILabel *fromAddressLabel;
+
+
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subLocationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *whoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *trackingNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *carrierLabel;
 
 @end
 
@@ -32,12 +34,13 @@
 }
 
 - (void)updateWithTicket:(Ticket *)ticket{
-    self.toAddressLabel.text = self.ticket.toAddress;
-    self.fromAddressLabel.text = self.ticket.fromAddress;
-    self.locationLabel.text = self.ticket.location;
-    self.whoLabel.text = self.ticket.employee;
-    self.dateLabel.text = [self convertDatetoString:self.ticket.timeStamp];
-    self.trackingNumberLabel.text = self.ticket.trackingNumber;
+    self.carrierLabel.text = [self.ticket objectForKey:@"Carrier"];
+    self.locationLabel.text = [self.ticket objectForKey:@"Location"];
+    self.subLocationLabel.text = [self.ticket objectForKey:@"SubLocation"];
+    self.whoLabel.text = [self.ticket objectForKey:@"Employee"];
+    self.dateLabel.text = [self convertDatetoString:[self.ticket objectForKey:@"TimeStamp"]];
+    self.trackingNumberLabel.text = [self.ticket objectForKey:@"TrackingNumber"];
+
 }
 -(NSString *)convertDatetoString:(NSDate *)date{
     NSString *dateString;

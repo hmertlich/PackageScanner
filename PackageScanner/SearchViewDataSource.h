@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 @import UIKit;
 
-@interface SearchViewDataSource : NSObject <UITableViewDataSource>
+@interface SearchViewDataSource : NSObject <UITableViewDataSource,UITableViewDelegate>
 
 @end

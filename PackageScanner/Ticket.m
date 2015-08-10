@@ -7,17 +7,43 @@
 //
 
 #import "Ticket.h"
+#import <Parse/PFObject+Subclass.h>
 
 @implementation Ticket
 
++ (void)load {
+    [self registerSubclass];
+}
 //@dynamic tells compiler to use parse for getter and setter methods
 @dynamic timeStamp;
-@dynamic toAddress;
-@dynamic fromAddress;
-@dynamic location;
 @dynamic employee;
+@dynamic location;
 @dynamic trackingNumber;
 
++ (NSString *)parseClassName {
+    return @"Ticket";
+}
+
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+    
+    self = [super init];
+    
+    if (self) {
+        if (dictionary[@"TimeStamp"]) {
+            self.timeStamp = dictionary[@"TimeStamp"];
+        }
+        if (dictionary[@"Employee"]) {
+            self.employee = dictionary[@"Employee"];
+        }
+        if (dictionary[@"Location"]) {
+            self.location = dictionary[@"Location"];
+        }
+        if (dictionary[@"TrackingNumber"]) {
+            self.trackingNumber = dictionary[@"TrackingNumber"];
+        }
+    }
+    return self;
+}
 
 -(NSString *)convertDatetoString:(NSDate *)date{
     NSString *dateString;

@@ -8,12 +8,15 @@
 
 #import "SearchViewController.h"
 #import "SearchResultsViewController.h"
+#import "SearchViewDataSource.h"
+#import "SearchViewDataSourceController.h"
 
 @interface SearchViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (weak, nonatomic) IBOutlet UITextField *returnAddressTextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
-@property (weak, nonatomic) IBOutlet UITextField *toAddressTextField;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+
 
 @end
 
@@ -22,8 +25,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self.searchButton setEnabled:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -34,20 +45,59 @@
     return YES;
 }
 - (IBAction)searchButtonPressed:(id)sender {
-    PFQuery *query = [PFQuery queryWithClassName:@"Ticket"];
+    [self.searchButton setEnabled:NO];
+#pragma error-Check the tracking text info.
+
+//    if ([self.trackingNumberTextField.text isEqualToString:@""]) {
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please Make Sure Tracking # Is Entered" preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+//        
+//        [self.tabBarController presentViewController:alert animated:YES completion:nil];
+//        [self.searchButton setEnabled:YES];
+//        return;
+//
+//    }
+
+    //creates a loading indicator
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.center=self.view.center;
+    
+    [self.view addSubview: activityIndicator];
+    
+    [activityIndicator startAnimating];
+    
+     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(handleSearchTimeout:) userInfo:nil repeats:NO];
+    
+        [[SearchViewDataSourceController sharedInstance]queryAllTicketDataWithDate:self.datePicker.date andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
+        
+            [timer invalidate];
+            
+            [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
+            
+            [activityIndicator stopAnimating];
+    }];
+        
+    
    
 }
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString: @"searchResultsSegue"]) {
-        
-        
-        //specifies an instance of the view we are segueing to.
-        SearchResultsViewController *searchResultsViewController = segue.destinationViewController;
-
-        
-    }
+- (void)handleSearchTimeout:(NSTimer *)aTimer {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Poor Connection" message:@"Please Check Your Connection" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+    [self.tabBarController presentViewController:alert animated:YES completion:nil];
 }
+
+- (IBAction)clearButtonTapped:(id)sender {
+    self.trackingNumberTextField.text = @"";
+    self.datePicker.date = [NSDate date];
+}
+
+-(void)dismissKeyboard {
+   
+    [self.trackingNumberTextField resignFirstResponder];
+}
+
 
 /*
 #pragma mark - Navigation

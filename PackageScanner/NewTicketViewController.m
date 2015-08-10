@@ -9,19 +9,19 @@
 #import "NewTicketViewController.h"
 #import "Ticket.h"
 #import "TicketController.h"
+#import <Parse/Parse.h>
 
-@import AVFoundation;
-@interface NewTicketViewController () <AVCaptureMetadataOutputObjectsDelegate>
+@interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (nonatomic) BOOL isReading;
-@property (nonatomic, strong) AVCaptureSession *captureSession;
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
-@property (weak, nonatomic) IBOutlet UITextField *toAddressTextField;
-@property (weak, nonatomic) IBOutlet UITextField *fromAddressTextField;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
 
-@property (weak, nonatomic) IBOutlet UITextField *locationTextField;
-@property (weak, nonatomic) IBOutlet UITextField *employeeTextField;
-@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UILabel *employeeLabel;
+@property (weak, nonatomic) IBOutlet UIPickerView *locationPicker;
+@property (weak, nonatomic) IBOutlet UITextField *optionalLocationTextField;
+@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
+
+@property (strong, nonatomic) NSArray *locations;
+@property (strong, nonatomic) NSArray *carriers;
 
 @end
 
@@ -30,12 +30,51 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
     
+    [self.view addGestureRecognizer:tap];
+    
+    
+    self.locationPicker.delegate = self;
+    
+    //set contents of pickerView
+    self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
+    
+    self.carriers = @[@"UPS", @"FedExGround", @"FedExAir", @"USPS", @"Other"];
+    
+    self.carrierSegmentedControl = [[UISegmentedControl alloc]initWithItems:self.carriers];
+    
+
 }
-- (void)viewWillAppear:(BOOL)animated
+
+-(void)viewWillAppear:(BOOL)animated{
+    //set timeStamp
+    Ticket *ticket = [Ticket new];
+    NSString *date = [ticket convertDatetoString:[NSDate date]];
+    self.timeStampLabel.text = date;
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    
+    //One column
+    return 1;
 }
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    //set number of rows
+    return self.locations.count;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    //set item per row
+    return [self.locations objectAtIndex:row];
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -47,12 +86,8 @@
 }
 
 - (IBAction)clearButtonTapped:(id)sender {
-    self.toAddressTextField.text = @"";
-    self.fromAddressTextField.text = @"";
     self.trackingNumberTextField.text = @"";
-    self.locationTextField.text = @"";
-    self.employeeTextField.text = @"";
-    self.datePicker.date = [NSDate date];
+    self.optionalLocationTextField.text = @"";
 }
 
 - (IBAction)unwindToNewTicketViewController:(UIStoryboardSegue *)segue {
@@ -66,11 +101,7 @@
 
 - (IBAction)saveButtonPressed:(id)sender {
     
-    if ([self.toAddressTextField.text isEqualToString:@""] ||
-        [self.fromAddressTextField.text isEqualToString:@""] ||
-        [self.employeeTextField.text isEqualToString:@""] ||
-        [self.locationTextField.text isEqualToString:@""] ||
-        [self.trackingNumberTextField.text isEqualToString:@""])
+    if ([self.trackingNumberTextField.text isEqualToString:@""])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please make sure all fields are entered" preferredStyle:UIAlertControllerStyleAlert];
         
@@ -79,19 +110,37 @@
         [self.tabBarController presentViewController:alert animated:YES completion:nil];
         return;
     }
+    //grab the index that is currently selected by the locationPicker
+    NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
     
-    PFObject *newTicket = [PFObject objectWithClassName:@"Ticket"];
-    newTicket[@"ToAddress"] = self.toAddressTextField.text;
-    newTicket[@"FromAddress"] = self.fromAddressTextField.text;
-    newTicket[@"createdAt"] = self.datePicker.date;
-    newTicket[@"Employee"] = self.employeeTextField.text;
-    newTicket[@"Location"] = self.locationTextField.text;
+    //grab the index that is currently selected by the segmentedControl
+     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
+    
+    PFObject *newTicket = [PFObject objectWithClassName:[Ticket parseClassName]];
+    newTicket[@"TimeStamp"] = [NSDate date];
+    newTicket[@"Carrier"] = [self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
+    newTicket[@"Employee"] = self.employeeLabel.text;
+    newTicket[@"Location"] = [self.locations objectAtIndex:selectedLocation];
+    newTicket[@"SubLocation"] = self.optionalLocationTextField.text;
     newTicket[@"TrackingNumber"] = self.trackingNumberTextField.text;
+    [newTicket saveInBackground];
     
+    //push an alert that tells the user the object was saved.
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Ticket Saved!" message:@"The Ticket was saved to the database" preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+    
+    [self.tabBarController presentViewController:alert animated:YES completion:nil];
     
     [self clearButtonTapped:sender];
 }
 
+-(void)dismissKeyboard {
+    
+    [self.trackingNumberTextField resignFirstResponder];
+    [self.optionalLocationTextField resignFirstResponder];
+    [self.trackingNumberTextField resignFirstResponder];
+}
 
 
 /*

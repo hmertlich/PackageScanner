@@ -58,7 +58,7 @@
     [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeCode128Code]];
     
     // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
-    self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
+    self.videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
     [self.videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     [self.videoPreviewLayer setFrame:self.viewPreview.layer.bounds];
     [self.viewPreview.layer addSublayer:self.videoPreviewLayer];
@@ -99,7 +99,7 @@
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeCode128Code]) {
             // If the found metadata is equal to the QR code metadata then update the status label's text,
             // stop reading and change the bar button item's title and the flag's value.
-            if ([metadataObj stringValue].length >= 18) {
+            if ([metadataObj stringValue].length >=18) {
 
                 self.trackingNumberString = [metadataObj stringValue];
                 //             If the audio player is not nil, then play the sound effect.

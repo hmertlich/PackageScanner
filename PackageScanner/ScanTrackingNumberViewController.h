@@ -10,7 +10,7 @@
 @import AVFoundation;
 
 
-@interface ScanTrackingNumberViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate>
+@interface ScanTrackingNumberViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate,AVAudioPlayerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewPreview;
 @property (strong, nonatomic) NSString *trackingNumberString;

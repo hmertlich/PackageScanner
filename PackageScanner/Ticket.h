@@ -9,16 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
 
-@interface Ticket : NSObject
+@interface Ticket : PFObject<PFSubclassing>
 
 @property (strong, nonatomic) NSDate *timeStamp;
-@property (strong, nonatomic) NSString *toAddress;
-@property (strong, nonatomic) NSString *fromAddress;
 @property (strong, nonatomic) NSString *location;
 @property (strong, nonatomic) NSString *employee;
-@property (strong, nonatomic) NSString *trackingNumber;
+@property (retain) NSString *trackingNumber;
 
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 -(NSString*)convertDatetoString:(NSDate*)date;
-
++ (NSString *)parseClassName;
 
 @end

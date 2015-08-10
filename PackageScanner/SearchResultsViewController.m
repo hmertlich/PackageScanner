@@ -10,6 +10,8 @@
 #import "Ticket.h"
 #import "TicketController.h"
 #import "DetailTicketViewController.h"
+#import "SearchViewDataSourceController.h"
+
 
 @interface SearchResultsViewController ()
 
@@ -35,6 +37,7 @@
     [self.tableView reloadData];
 }
 
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString: @"detailTicketView"]) {
@@ -46,7 +49,7 @@
         DetailTicketViewController *detailTicketViewController = segue.destinationViewController;
         
         //creates a new entry and sets it to the sharedInstance classes --> entries array --> index where the user clicked on this tableView.
-         Ticket *ticket = [TicketController sharedInstance].tickets[path.row];
+         Ticket *ticket =[SearchViewDataSourceController sharedInstance].searchResults[path.row];
         
         //sets the detailViewController instances entry = to the entry that was selected.
         detailTicketViewController.ticket = ticket;
