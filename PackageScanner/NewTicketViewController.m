@@ -9,9 +9,10 @@
 #import "NewTicketViewController.h"
 #import "Ticket.h"
 #import "TicketController.h"
-#import <Parse/Parse.h>
+#import <MessageUI/MessageUI.h>
+#import "NewTicketController.h"
 
-@interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
+@interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate,MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
 
@@ -36,24 +37,16 @@
     
     [self.view addGestureRecognizer:tap];
     
-    
     self.locationPicker.delegate = self;
     
     //set contents of pickerView
     self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
     
-    self.carriers = @[@"UPS", @"FedExGround", @"FedExAir", @"USPS", @"Other"];
-    
-    self.carrierSegmentedControl = [[UISegmentedControl alloc]initWithItems:self.carriers];
-    
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     //set timeStamp
-    Ticket *ticket = [Ticket new];
-    NSString *date = [ticket convertDatetoString:[NSDate date]];
-    self.timeStampLabel.text = date;
+    self.timeStampLabel.text = [self convertDatetoString:[NSDate date]];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -79,6 +72,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - Text editing methods. Resigning textField, Clear Button, Dismiss Keyboard
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -89,6 +83,12 @@
     self.trackingNumberTextField.text = @"";
     self.optionalLocationTextField.text = @"";
 }
+-(void)dismissKeyboard {
+    
+    [self.trackingNumberTextField resignFirstResponder];
+    [self.optionalLocationTextField resignFirstResponder];
+    [self.trackingNumberTextField resignFirstResponder];
+}
 
 - (IBAction)unwindToNewTicketViewController:(UIStoryboardSegue *)segue {
     if ([segue.identifier isEqualToString:@"unwindToNewTicketView"]) {
@@ -98,6 +98,8 @@
         
     }
 }
+
+#pragma mark - Save Button tasks
 
 - (IBAction)saveButtonPressed:(id)sender {
     
@@ -114,34 +116,97 @@
     NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
     
     //grab the index that is currently selected by the segmentedControl
-     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
+    NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
     
-    PFObject *newTicket = [PFObject objectWithClassName:[Ticket parseClassName]];
-    newTicket[@"TimeStamp"] = [NSDate date];
-    newTicket[@"Carrier"] = [self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
-    newTicket[@"Employee"] = self.employeeLabel.text;
-    newTicket[@"Location"] = [self.locations objectAtIndex:selectedLocation];
-    newTicket[@"SubLocation"] = self.optionalLocationTextField.text;
-    newTicket[@"TrackingNumber"] = self.trackingNumberTextField.text;
-    [newTicket saveInBackground];
+    //get current timezone in seconds
+    NSTimeInterval timeZoneSeconds = [[NSTimeZone localTimeZone] secondsFromGMT];
+    
+    //grab the data
+   
+    NSDate *timeStamp = [NSDate date];
+    NSString *carrier =[self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
+    NSString *employee = self.employeeLabel.text;
+    NSString *trackingNum = self.trackingNumberTextField.text;
+    NSString *location = [self.locations objectAtIndex:selectedLocation];
+    NSString *subLocation = self.optionalLocationTextField.text;
+    
+    //save ticket to parse
+    NewTicketController *newTicketController = [NewTicketController new];
+    [newTicketController savePFObjectToParseWithTime:timeStamp andTrackingNumber:trackingNum andCarrier:carrier andEmployee:employee andLocation:location andSubLocation:subLocation];
+    
+    [self createEmailWithTicket:timeStamp andTrackingNumber:trackingNum andCarrier:carrier andEmployee:employee andLocation:location andSubLocation:subLocation];
+        
+    // Present mail view controller on screen
+    
     
     //push an alert that tells the user the object was saved.
+    
+    [self clearButtonTapped:sender];
+    
+    
+}
+
+- (void)createEmailWithTicket:(NSDate *)timeStamp andTrackingNumber:(NSString *)trackingNumber andCarrier:(NSString *)carrier andEmployee:(NSString *)employee andLocation:(NSString *)location andSubLocation:(NSString *)subLocation{
+    
+    //Create an email to send to c7.com
+    // Email Subject
+    NSString *emailTitle = [NSString stringWithFormat:@"Tracking #: %@",trackingNumber];
+    // Email Content
+    NSString *messageBody = [NSString stringWithFormat:(@"Time Stamp: %@\n Carrier: %@\n Tracking #: %@\n Employee: %@\n Location: %@\n SubLocation: %@"),[self convertDatetoString:timeStamp],carrier,trackingNumber,employee,location,subLocation];
+    // To address
+    NSArray *toRecipents = [NSArray arrayWithObject:@"support@c7.com"];
+    
+    MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+    mc.mailComposeDelegate = self;
+    [mc setSubject:emailTitle];
+    [mc setMessageBody:messageBody isHTML:NO];
+    [mc setToRecipients:toRecipents];
+    
+    [self presentViewController:mc animated:YES completion:nil];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Ticket Saved!" message:@"The Ticket was saved to the database" preferredStyle:UIAlertControllerStyleAlert];
     
     [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
     
     [self.tabBarController presentViewController:alert animated:YES completion:nil];
-    
-    [self clearButtonTapped:sender];
 }
 
--(void)dismissKeyboard {
+- (NSString *)convertDatetoString:(NSDate *)date{
+    NSString *dateString;
     
-    [self.trackingNumberTextField resignFirstResponder];
-    [self.optionalLocationTextField resignFirstResponder];
-    [self.trackingNumberTextField resignFirstResponder];
-}
+    NSDateFormatter *format = [NSDateFormatter new];
+    [format setDateStyle: NSDateFormatterMediumStyle];
+    [format setTimeStyle: NSDateFormatterShortStyle];
+    
+    dateString =  [format stringFromDate:date];
 
+    return dateString;
+    
+}
 
 /*
 #pragma mark - Navigation

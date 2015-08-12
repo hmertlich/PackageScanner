@@ -30,10 +30,18 @@
                                    action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    
+    
+    
 }
 -(void)viewDidAppear:(BOOL)animated
 {
     [self.searchButton setEnabled:YES];
+    
+    self.datePicker.minuteInterval = 30;
+    self.datePicker.maximumDate = [NSDate date];
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    self.datePicker.datePickerMode = daylight;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -67,15 +75,22 @@
     
     [activityIndicator startAnimating];
     
-     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(handleSearchTimeout:) userInfo:nil repeats:NO];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(handleSearchTimeout:) userInfo:nil repeats:NO];
     
-        [[SearchViewDataSourceController sharedInstance]queryAllTicketDataWithDate:self.datePicker.date andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
+    NSDate *timeStamp = self.datePicker.date;
+    timeStamp = [self dateAtBeginningOfDayForDate:timeStamp];
+    
+        [[SearchViewDataSourceController sharedInstance]queryAllTicketDataWithDate:timeStamp andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
         
             [timer invalidate];
             
+#pragma warning -need to check if query is complete, then send segue.
             [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
             
+            
+            
             [activityIndicator stopAnimating];
+            
     }];
         
     
@@ -86,6 +101,7 @@
     
     [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
     [self.tabBarController presentViewController:alert animated:YES completion:nil];
+    [self.searchButton setEnabled:YES];
 }
 
 - (IBAction)clearButtonTapped:(id)sender {
@@ -96,6 +112,39 @@
 -(void)dismissKeyboard {
    
     [self.trackingNumberTextField resignFirstResponder];
+}
+
+- (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate
+{
+    // Use the user's current calendar and time zone
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+    [calendar setTimeZone:timeZone];
+    
+    // Selectively convert the date components (year, month, day) of the input date
+    NSDateComponents *dateComps = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:inputDate];
+    
+    // Set the time components manually
+    [dateComps setHour:0];
+    [dateComps setMinute:0];
+    [dateComps setSecond:0];
+    
+    // Convert back
+    NSDate *beginningOfDay = [calendar dateFromComponents:dateComps];
+    return beginningOfDay;
+}
+
+- (NSString *)convertDatetoString:(NSDate *)date{
+    NSString *dateString;
+    
+    NSDateFormatter *format = [NSDateFormatter new];
+    [format setDateStyle: NSDateFormatterMediumStyle];
+    [format setTimeStyle: NSDateFormatterShortStyle];
+    
+    dateString =  [format stringFromDate:date];
+    
+    return dateString;
+    
 }
 
 

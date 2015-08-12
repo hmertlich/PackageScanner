@@ -20,16 +20,10 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellID"];
     
-    if (!cell) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cellID"];
-    }
-    
     Ticket *ticket = [[Ticket alloc]initWithDictionary:[[SearchViewDataSourceController sharedInstance].searchResults objectAtIndex:indexPath.row]];
     
-    NSString *ticketDate = [ticket convertDatetoString:ticket.timeStamp];
-    
-    cell.detailTextLabel.text = ticketDate;
-    cell.textLabel.text = ticket.trackingNumber;
+    cell.textLabel.text = ticket.carrier;
+    cell.detailTextLabel.text = ticket.trackingNumber;
     
     return cell;
 }
@@ -38,10 +32,14 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Ticket *ticket = [[SearchViewDataSourceController sharedInstance].searchResults objectAtIndex:indexPath.row];
-            [ticket deleteInBackground];
-            [[SearchViewDataSourceController sharedInstance].searchResults removeObjectAtIndex:indexPath.row];
-            [tableView reloadData];
         
+            [ticket deleteInBackground];
+        
+//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        
+            [[SearchViewDataSourceController sharedInstance].searchResults removeObjectAtIndex:indexPath.row];
+        
+            [tableView reloadData];
     }
     
     
