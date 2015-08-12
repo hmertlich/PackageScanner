@@ -34,15 +34,19 @@
 }
 
 - (void)updateWithTicket:(Ticket *)ticket{
+    
+    NSTimeInterval timeZoneSeconds = [[NSTimeZone localTimeZone] secondsFromGMT];
+    NSDate *timeStamp = [[self.ticket objectForKey:@"TimeStamp"] dateByAddingTimeInterval:timeZoneSeconds+21600];
+    
     self.carrierLabel.text = [self.ticket objectForKey:@"Carrier"];
     self.locationLabel.text = [self.ticket objectForKey:@"Location"];
     self.subLocationLabel.text = [self.ticket objectForKey:@"SubLocation"];
     self.whoLabel.text = [self.ticket objectForKey:@"Employee"];
-    self.dateLabel.text = [self convertDatetoString:[self.ticket objectForKey:@"TimeStamp"]];
+    self.dateLabel.text = [self convertDatetoString:timeStamp];
     self.trackingNumberLabel.text = [self.ticket objectForKey:@"TrackingNumber"];
 
 }
--(NSString *)convertDatetoString:(NSDate *)date{
+- (NSString *)convertDatetoString:(NSDate *)date{
     NSString *dateString;
     
     NSDateFormatter *format = [NSDateFormatter new];

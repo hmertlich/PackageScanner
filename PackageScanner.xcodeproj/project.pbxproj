@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240C78461B7AA1A700709489 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240C78451B7AA1A700709489 /* MessageUI.framework */; };
+		240C78491B7AAAC500709489 /* NewTicketController.m in Sources */ = {isa = PBXBuildFile; fileRef = 240C78481B7AAAC500709489 /* NewTicketController.m */; };
 		242A878A1B66980E00960E85 /* TicketController.m in Sources */ = {isa = PBXBuildFile; fileRef = 242A87891B66980E00960E85 /* TicketController.m */; };
 		246B2D2A1B703E1900CE8A08 /* ScanTrackingNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 246B2D291B703E1900CE8A08 /* ScanTrackingNumberViewController.m */; };
 		246B2D2C1B70412E00CE8A08 /* beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 246B2D2B1B70412E00CE8A08 /* beep.mp3 */; };
@@ -53,6 +55,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		240C78451B7AA1A700709489 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		240C78471B7AAAC500709489 /* NewTicketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewTicketController.h; sourceTree = "<group>"; };
+		240C78481B7AAAC500709489 /* NewTicketController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTicketController.m; sourceTree = "<group>"; };
 		242A87881B66980E00960E85 /* TicketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TicketController.h; sourceTree = "<group>"; };
 		242A87891B66980E00960E85 /* TicketController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TicketController.m; sourceTree = "<group>"; };
 		246B2D281B703E1900CE8A08 /* ScanTrackingNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanTrackingNumberViewController.h; sourceTree = "<group>"; };
@@ -108,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				240C78461B7AA1A700709489 /* MessageUI.framework in Frameworks */,
 				246FEBA01B73F34C00611725 /* libsqlite3.dylib in Frameworks */,
 				246FEB9E1B73F34000611725 /* libz.dylib in Frameworks */,
 				246FEB9C1B73F33700611725 /* SystemConfiguration.framework in Frameworks */,
@@ -151,6 +157,8 @@
 			children = (
 				242A87881B66980E00960E85 /* TicketController.h */,
 				242A87891B66980E00960E85 /* TicketController.m */,
+				240C78471B7AAAC500709489 /* NewTicketController.h */,
+				240C78481B7AAAC500709489 /* NewTicketController.m */,
 				24C0A17D1B6828DC001DBB24 /* SearchViewDataSource.h */,
 				24C0A17E1B6828DC001DBB24 /* SearchViewDataSource.m */,
 				246FEBA11B74222A00611725 /* SearchViewDataSourceController.h */,
@@ -162,6 +170,7 @@
 		246FEB391B73CD9E00611725 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				240C78451B7AA1A700709489 /* MessageUI.framework */,
 				246FEB9F1B73F34C00611725 /* libsqlite3.dylib */,
 				246FEB9D1B73F34000611725 /* libz.dylib */,
 				246FEB9B1B73F33700611725 /* SystemConfiguration.framework */,
@@ -368,6 +377,7 @@
 				246B2D2A1B703E1900CE8A08 /* ScanTrackingNumberViewController.m in Sources */,
 				24E1F6BB1B65DF7A0077EB44 /* Ticket.m in Sources */,
 				24E171FD1B645044003F2102 /* ViewController.m in Sources */,
+				240C78491B7AAAC500709489 /* NewTicketController.m in Sources */,
 				246FEBA31B74222A00611725 /* SearchViewDataSourceController.m in Sources */,
 				24E1721F1B645648003F2102 /* NewTicketViewController.m in Sources */,
 				24E171FA1B645044003F2102 /* AppDelegate.m in Sources */,

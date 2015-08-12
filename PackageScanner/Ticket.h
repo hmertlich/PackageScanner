@@ -14,7 +14,8 @@
 @property (strong, nonatomic) NSDate *timeStamp;
 @property (strong, nonatomic) NSString *location;
 @property (strong, nonatomic) NSString *employee;
-@property (retain) NSString *trackingNumber;
+@property (strong, nonatomic) NSString *carrier;
+@property (strong, nonatomic) NSString *trackingNumber;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 -(NSString*)convertDatetoString:(NSDate*)date;

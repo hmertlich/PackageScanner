@@ -19,6 +19,7 @@
 @dynamic employee;
 @dynamic location;
 @dynamic trackingNumber;
+@dynamic carrier;
 
 + (NSString *)parseClassName {
     return @"Ticket";
@@ -40,6 +41,9 @@
         }
         if (dictionary[@"TrackingNumber"]) {
             self.trackingNumber = dictionary[@"TrackingNumber"];
+        }
+        if (dictionary[@"Carrier"]) {
+            self.carrier = dictionary[@"Carrier"];
         }
     }
     return self;
