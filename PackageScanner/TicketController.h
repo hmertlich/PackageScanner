@@ -16,8 +16,5 @@
 //Read(Singleton)
 + (TicketController *)sharedInstance;
 
-//Remove
-+(void) removeTicket:(Ticket *)ticket;
-
 
 @end

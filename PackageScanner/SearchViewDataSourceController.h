@@ -15,7 +15,7 @@
 
 + (SearchViewDataSourceController*)sharedInstance;
 
-- (void)queryAllTicketDataWithDate:(NSDate *)date andTrackingNumber:(NSString *)trackingNumber withCompletion:(void (^)(void))completion;
+- (void)queryParseWithDate:(NSDate *)date andTrackingNumber:(NSString *)trackingNumber withCompletion:(void (^)(void))completion;
 
 
 @end

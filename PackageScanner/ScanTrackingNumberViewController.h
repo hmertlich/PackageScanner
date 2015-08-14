@@ -14,5 +14,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewPreview;
 @property (strong, nonatomic) NSString *trackingNumberString;
+@property (nonatomic, strong) NSString *carrier;
 
 @end

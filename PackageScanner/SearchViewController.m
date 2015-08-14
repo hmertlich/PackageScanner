@@ -13,7 +13,7 @@
 
 @interface SearchViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
@@ -54,54 +54,38 @@
 }
 - (IBAction)searchButtonPressed:(id)sender {
     [self.searchButton setEnabled:NO];
-#pragma error-Check the tracking text info.
-
-//    if ([self.trackingNumberTextField.text isEqualToString:@""]) {
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please Make Sure Tracking # Is Entered" preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
-//        
-//        [self.tabBarController presentViewController:alert animated:YES completion:nil];
-//        [self.searchButton setEnabled:YES];
-//        return;
-//
-//    }
 
     //creates a loading indicator
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicator.center=self.view.center;
+    self.activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityIndicator.center=self.view.center;
     
-    [self.view addSubview: activityIndicator];
+    [self.view addSubview: self.activityIndicator];
     
-    [activityIndicator startAnimating];
+    [self.activityIndicator startAnimating];
     
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(handleSearchTimeout:) userInfo:nil repeats:NO];
     
     NSDate *timeStamp = self.datePicker.date;
     timeStamp = [self dateAtBeginningOfDayForDate:timeStamp];
     
-        [[SearchViewDataSourceController sharedInstance]queryAllTicketDataWithDate:timeStamp andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
-        
-            [timer invalidate];
-            
+    [[SearchViewDataSourceController sharedInstance]queryParseWithDate:timeStamp andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
+        [timer invalidate];
 #pragma warning -need to check if query is complete, then send segue.
-            [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
-            
-            
-            
-            [activityIndicator stopAnimating];
-            
-    }];
+        [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
+        [self.activityIndicator stopAnimating];
         
+    }];
     
    
 }
+
 - (void)handleSearchTimeout:(NSTimer *)aTimer {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Poor Connection" message:@"Please Check Your Connection" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Poor Connection" message:@"Please Check Your Connection" preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
-    [self.tabBarController presentViewController:alert animated:YES completion:nil];
-    [self.searchButton setEnabled:YES];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+        [self.tabBarController presentViewController:alert animated:YES completion:nil];
+        [self.searchButton setEnabled:YES];
+        [self.activityIndicator stopAnimating];
 }
 
 - (IBAction)clearButtonTapped:(id)sender {

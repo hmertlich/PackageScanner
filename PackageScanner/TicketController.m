@@ -24,7 +24,4 @@
     return sharedInstance;
 }
 
-+(void)removeTicket:(Ticket *)ticket{
-    
-}
 @end

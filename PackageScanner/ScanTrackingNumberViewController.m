@@ -14,8 +14,6 @@
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
 
--(void)stopReading;
--(void)loadBeepSound;
 @end
 
 @implementation ScanTrackingNumberViewController
@@ -97,12 +95,31 @@
         
         AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeCode128Code]) {
-            // If the found metadata is equal to the QR code metadata then update the status label's text,
-            // stop reading and change the bar button item's title and the flag's value.
+            // If the found metadata is equal to the 128 code then update the status label's text,
+   
             if ([metadataObj stringValue].length >=18) {
 
-                self.trackingNumberString = [metadataObj stringValue];
-                //             If the audio player is not nil, then play the sound effect.
+                NSString *parsedTrackingNumber = [metadataObj stringValue];
+                
+                // Check barcode type, and return the tracking number based on company
+                if ([self.carrier isEqualToString: @"UPS"]) {
+                    self.trackingNumberString = parsedTrackingNumber;
+                }
+                if ([self.carrier isEqualToString: @"FedEx"]) {
+                    self.trackingNumberString = [parsedTrackingNumber substringFromIndex:(parsedTrackingNumber.length -12)];
+                }
+                if ([self.carrier isEqualToString: @"DHL"]) {
+                    self.trackingNumberString = [parsedTrackingNumber substringFromIndex:(parsedTrackingNumber.length -12)];
+                }
+                if ([self.carrier isEqualToString: @"USPS"]) {
+                    self.trackingNumberString = parsedTrackingNumber;
+                }
+                if ([self.carrier isEqualToString: @"Other"]) {
+                    self.trackingNumberString = [metadataObj stringValue];
+                }
+                
+                //If the audio player is not nil, then play the sound effect.
+                
                 if (self.audioPlayer) {
                     [self.audioPlayer play];
                 }
@@ -110,11 +127,9 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self performSegueWithIdentifier:@"unwindToNewTicketView" sender:self];
                 });
-            
             }
         }
     }
-    
 }
 
 -(void)loadBeepSound{

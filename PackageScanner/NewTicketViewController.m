@@ -15,15 +15,18 @@
 @interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate,MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *scanButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *employeeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *selectedLocation;
+@property (weak, nonatomic) IBOutlet UIView *pickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *locationPicker;
 @property (weak, nonatomic) IBOutlet UITextField *optionalLocationTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
 
 @property (strong, nonatomic) NSArray *locations;
 @property (strong, nonatomic) NSArray *carriers;
-@property (weak, nonatomic) IBOutlet UIButton *scanButton;
+
 
 @end
 
@@ -101,6 +104,33 @@
         
     }
 }
+- (IBAction)selectLocation:(id)sender {
+        self.pickerView.hidden = NO;
+        CABasicAnimation *animation = [CABasicAnimation animation];
+        animation.keyPath = @"position.y";
+        animation.fromValue = @(self.pickerView.center.y);
+        animation.toValue = @(self.pickerView.center.y - 320);
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    
+        [self.pickerView.layer addAnimation:animation forKey:@"moveUpAnimation"];
+        self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y -320);
+    
+}
+- (IBAction)pickerDoneButtonPressed:(id)sender {
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    animation.keyPath = @"position.y";
+    animation.fromValue = @(self.pickerView.center.y);
+    animation.toValue = @(self.pickerView.center.y + 320);
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    [self.pickerView.layer addAnimation:animation forKey:@"moveDownAnimation"];
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +320);
+    
+    //grab the index that is currently selected by the locationPicker
+    NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
+    self.selectedLocation.text = [self.locations objectAtIndex:selectedLocation];
+    self.pickerView.hidden = YES;
+}
 
 #pragma mark - Save Button tasks
 
@@ -121,12 +151,11 @@
     //grab the index that is currently selected by the segmentedControl
     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
 
-    
     //grab the data
    
     NSDate *timeStamp = [NSDate date];
     NSString *carrier =[self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
-    NSString *employee = self.employeeLabel.text;
+    NSString *employee = @"";//self.employeeLabel.text;
     NSString *trackingNum = self.trackingNumberTextField.text;
     NSString *location = [self.locations objectAtIndex:selectedLocation];
     NSString *subLocation = self.optionalLocationTextField.text;
@@ -209,14 +238,16 @@
     
 }
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     
+    NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
+     
+     ScanTrackingNumberViewController *scanTrackingNumberView = [segue destinationViewController];
+     scanTrackingNumberView.carrier = [self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
+ }
+
 
 @end
