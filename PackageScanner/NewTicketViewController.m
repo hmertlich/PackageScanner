@@ -23,6 +23,7 @@
 
 @property (strong, nonatomic) NSArray *locations;
 @property (strong, nonatomic) NSArray *carriers;
+@property (weak, nonatomic) IBOutlet UIButton *scanButton;
 
 @end
 
@@ -42,6 +43,8 @@
     //set contents of pickerView
     self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
     
+    self.scanButton.layer.cornerRadius = 10;
+    self.scanButton.clipsToBounds = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -117,9 +120,7 @@
     
     //grab the index that is currently selected by the segmentedControl
     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
-    
-    //get current timezone in seconds
-    NSTimeInterval timeZoneSeconds = [[NSTimeZone localTimeZone] secondsFromGMT];
+
     
     //grab the data
    
