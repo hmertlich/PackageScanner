@@ -105,15 +105,15 @@
     }
 }
 - (IBAction)selectLocation:(id)sender {
-        self.pickerView.hidden = NO;
-        CABasicAnimation *animation = [CABasicAnimation animation];
-        animation.keyPath = @"position.y";
-        animation.fromValue = @(self.pickerView.center.y);
-        animation.toValue = @(self.pickerView.center.y - 320);
-        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    self.pickerView.hidden = NO;
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    animation.keyPath = @"position.y";
+    animation.fromValue = @(self.pickerView.center.y);
+    animation.toValue = @(self.pickerView.center.y - 320);
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
-        [self.pickerView.layer addAnimation:animation forKey:@"moveUpAnimation"];
-        self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y -320);
+    [self.pickerView.layer addAnimation:animation forKey:@"moveUpAnimation"];
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y - 320);
     
 }
 - (IBAction)pickerDoneButtonPressed:(id)sender {
@@ -129,7 +129,8 @@
     //grab the index that is currently selected by the locationPicker
     NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
     self.selectedLocation.text = [self.locations objectAtIndex:selectedLocation];
-    self.pickerView.hidden = YES;
+    
+//    self.pickerView.hidden = YES;
 }
 
 #pragma mark - Save Button tasks
