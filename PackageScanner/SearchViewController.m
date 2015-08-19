@@ -13,7 +13,7 @@
 
 @interface SearchViewController ()
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
-@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
@@ -38,7 +38,6 @@
 {
     [self.searchButton setEnabled:YES];
     
-    self.datePicker.minuteInterval = 30;
     self.datePicker.maximumDate = [NSDate date];
     self.datePicker.datePickerMode = UIDatePickerModeDate;
     self.datePicker.datePickerMode = daylight;
@@ -56,10 +55,7 @@
     [self.searchButton setEnabled:NO];
 
     //creates a loading indicator
-    self.activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.activityIndicator.center=self.view.center;
-    
-    [self.view addSubview: self.activityIndicator];
     
     [self.activityIndicator startAnimating];
     
