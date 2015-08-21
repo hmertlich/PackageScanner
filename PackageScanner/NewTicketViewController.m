@@ -48,6 +48,22 @@
     
     self.scanButton.layer.cornerRadius = 10;
     self.scanButton.clipsToBounds = YES;
+    
+    UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:logoImage];
+     [self.navigationItem.titleView setCenter:self.navigationItem.titleView.center];
+    
+    
+    //Creates a bottom border of navigationBar that has a orange color
+    UIColor *orange = [UIColor colorWithRed:240/255. green:119/255. blue:36/255. alpha:1];
+    
+     UINavigationBar* navigationBar = self.navigationController.navigationBar;
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,navigationBar.frame.size.height-1,navigationBar.frame.size.width, 2)];
+   
+    [navBorder setBackgroundColor:orange];
+    [navigationBar addSubview:navBorder];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -109,37 +125,36 @@
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.y";
     animation.fromValue = @(self.pickerView.center.y);
-    animation.toValue = @(self.pickerView.center.y - 320);
+    animation.toValue = @(self.pickerView.center.y - 290);
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
     [self.pickerView.layer addAnimation:animation forKey:@"moveUpAnimation"];
-    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y - 320);
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y - 290);
     
 }
 - (IBAction)pickerDoneButtonPressed:(id)sender {
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.y";
     animation.fromValue = @(self.pickerView.center.y);
-    animation.toValue = @(self.pickerView.center.y + 320);
+    animation.toValue = @(self.pickerView.center.y + 290);
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     
     [self.pickerView.layer addAnimation:animation forKey:@"moveDownAnimation"];
-    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +320);
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +290);
     
     //grab the index that is currently selected by the locationPicker
     NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
     self.selectedLocation.text = [self.locations objectAtIndex:selectedLocation];
     
-//    self.pickerView.hidden = YES;
 }
 
 #pragma mark - Save Button tasks
 
 - (IBAction)saveButtonPressed:(id)sender {
     
-    if ([self.trackingNumberTextField.text isEqualToString:@""])
+    if ([self.selectedLocation.text isEqualToString:@""])
     {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please make sure all fields are entered" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please Select a Location" preferredStyle:UIAlertControllerStyleAlert];
         
         [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
         

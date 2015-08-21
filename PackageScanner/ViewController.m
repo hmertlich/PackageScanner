@@ -20,12 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor yellowColor] }
-                                             forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor yellowColor] }
-                                             forState:UIControlStateSelected];
     
-        
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -39,7 +34,23 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)submitButtonPressed:(id)sender {
-    
+    if ([self.userNameTextField.text isEqualToString:@""]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing/Incorrect Info" message:@"Please Enter a Username" preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+        
+        [self.tabBarController presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+    if ([self.passwordTextField.text isEqualToString:@""]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing/Incorrect Info" message:@"Please Enter a Password" preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDestructive handler:nil]];
+        
+        [self.tabBarController presentViewController:alert animated:YES completion:nil];
+        return;
+    }
 }
+
 
 @end

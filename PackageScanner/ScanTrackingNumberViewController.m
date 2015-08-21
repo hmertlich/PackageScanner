@@ -21,7 +21,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:logoImage];
+    
+    //Creates a bottom border of navigationBar that has a orange color
+    UIColor *orange = [UIColor colorWithRed:240/255. green:119/255. blue:36/255. alpha:1];
+    
+    UINavigationBar* navigationBar = self.navigationController.navigationBar;
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,navigationBar.frame.size.height-1,navigationBar.frame.size.width, 2)];
+    
+    [navBorder setBackgroundColor:orange];
+    [navigationBar addSubview:navBorder];
+
     
     // Initially make the captureSession object nil.
     self.captureSession = nil;
