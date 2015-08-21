@@ -42,6 +42,7 @@
 		24E1721C1B6452AB003F2102 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E1721B1B6452AB003F2102 /* SearchViewController.m */; };
 		24E1721F1B645648003F2102 /* NewTicketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E1721E1B645648003F2102 /* NewTicketViewController.m */; };
 		24E1F6BB1B65DF7A0077EB44 /* Ticket.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E1F6BA1B65DF7A0077EB44 /* Ticket.m */; };
+		24E23EB21B86A68B001FE63B /* AppearanceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E23EB11B86A68B001FE63B /* AppearanceController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,8 @@
 		24E1721E1B645648003F2102 /* NewTicketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTicketViewController.m; sourceTree = "<group>"; };
 		24E1F6B91B65DF7A0077EB44 /* Ticket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ticket.h; sourceTree = "<group>"; };
 		24E1F6BA1B65DF7A0077EB44 /* Ticket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ticket.m; sourceTree = "<group>"; };
+		24E23EB01B86A68B001FE63B /* AppearanceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceController.h; sourceTree = "<group>"; };
+		24E23EB11B86A68B001FE63B /* AppearanceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +158,8 @@
 		242A878B1B66983000960E85 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				24E23EB01B86A68B001FE63B /* AppearanceController.h */,
+				24E23EB11B86A68B001FE63B /* AppearanceController.m */,
 				242A87881B66980E00960E85 /* TicketController.h */,
 				242A87891B66980E00960E85 /* TicketController.m */,
 				240C78471B7AAAC500709489 /* NewTicketController.h */,
@@ -381,6 +386,7 @@
 				246FEBA31B74222A00611725 /* SearchViewDataSourceController.m in Sources */,
 				24E1721F1B645648003F2102 /* NewTicketViewController.m in Sources */,
 				24E171FA1B645044003F2102 /* AppDelegate.m in Sources */,
+				24E23EB21B86A68B001FE63B /* AppearanceController.m in Sources */,
 				24C0A1821B6846D8001DBB24 /* SearchResultsViewController.m in Sources */,
 				24E1721C1B6452AB003F2102 /* SearchViewController.m in Sources */,
 				242A878A1B66980E00960E85 /* TicketController.m in Sources */,

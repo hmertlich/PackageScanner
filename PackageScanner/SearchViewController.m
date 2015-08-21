@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (weak, nonatomic) IBOutlet UIButton *clearButton;
 
 
 @end
@@ -43,6 +44,10 @@
     
     [navBorder setBackgroundColor:orange];
     [navigationBar addSubview:navBorder];
+    
+    //set button border colors to theme orange
+    self.clearButton.layer.borderColor = orange.CGColor;
+//    self.searchButton.layer.borderColor = orange.CGColor;
 }
 -(void)viewDidAppear:(BOOL)animated
 {

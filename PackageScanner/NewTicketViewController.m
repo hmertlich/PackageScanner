@@ -11,14 +11,18 @@
 #import "TicketController.h"
 #import <MessageUI/MessageUI.h>
 #import "NewTicketController.h"
+#import "AppearanceController.h"
 
 @interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate,MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *scanButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *clearButton;
+@property (weak, nonatomic) IBOutlet UIButton *selectButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *selectedLocation;
 @property (weak, nonatomic) IBOutlet UIView *pickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *locationPicker;
 @property (weak, nonatomic) IBOutlet UITextField *optionalLocationTextField;
@@ -49,6 +53,7 @@
     self.scanButton.layer.cornerRadius = 10;
     self.scanButton.clipsToBounds = YES;
     
+    
     UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:logoImage];
      [self.navigationItem.titleView setCenter:self.navigationItem.titleView.center];
@@ -64,6 +69,11 @@
     [navBorder setBackgroundColor:orange];
     [navigationBar addSubview:navBorder];
     
+    //set border color to the theme orange
+    self.locationButton.layer.borderColor = orange.CGColor;
+    self.submitButton.layer.borderColor = orange.CGColor;
+    self.clearButton.layer.borderColor = orange.CGColor;
+    self.selectButton.layer.borderColor = orange.CGColor;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -104,6 +114,7 @@
 - (IBAction)clearButtonTapped:(id)sender {
     self.trackingNumberTextField.text = @"";
     self.optionalLocationTextField.text = @"";
+    [self.locationButton setTitle:@"Select Location" forState:UIControlStateNormal];
 }
 -(void)dismissKeyboard {
     
@@ -143,16 +154,23 @@
     self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +290);
     
     //grab the index that is currently selected by the locationPicker
+   
     NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
-    self.selectedLocation.text = [self.locations objectAtIndex:selectedLocation];
     
+    if ([self.locationButton.titleLabel.text isEqualToString:[self.locations objectAtIndex:selectedLocation]]) {
+        return;
+    } else {
+        [self.locationButton setTitle:[self.locations objectAtIndex:selectedLocation] forState:UIControlStateNormal];
+        [self.locationButton.titleLabel sizeToFit];
+    }
+
 }
 
 #pragma mark - Save Button tasks
 
 - (IBAction)saveButtonPressed:(id)sender {
     
-    if ([self.selectedLocation.text isEqualToString:@""])
+    if ([self.locationButton.titleLabel.text isEqualToString:@"Select Location"])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please Select a Location" preferredStyle:UIAlertControllerStyleAlert];
         

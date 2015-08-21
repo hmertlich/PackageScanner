@@ -35,8 +35,6 @@
         
             [ticket deleteInBackground];
         
-//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-        
             [[SearchViewDataSourceController sharedInstance].searchResults removeObjectAtIndex:indexPath.row];
         
             [tableView reloadData];

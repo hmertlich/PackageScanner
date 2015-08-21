@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+@import UIKit;
 
 @interface AppearanceController : NSObject
+
+
++ (void)initializeAppearanceDefaults:(UINavigationController *)navigationController;
 
 @end
