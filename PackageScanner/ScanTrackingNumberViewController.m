@@ -42,8 +42,7 @@
     [self loadBeepSound];
     NSError *error;
     
-    // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video
-    // as the media type parameter.
+    // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     // Get an instance of the AVCaptureDeviceInput class using the previous device object.

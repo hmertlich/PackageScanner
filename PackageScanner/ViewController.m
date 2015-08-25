@@ -20,7 +20,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
     
+    [self.view addGestureRecognizer:tap];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -33,6 +37,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+-(void)dismissKeyboard {
+    
+    [self.userNameTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
+}
+
 - (IBAction)submitButtonPressed:(id)sender {
     if ([self.userNameTextField.text isEqualToString:@""]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing/Incorrect Info" message:@"Please Enter a Username" preferredStyle:UIAlertControllerStyleAlert];

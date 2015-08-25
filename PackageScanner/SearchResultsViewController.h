@@ -10,7 +10,7 @@
 #import "TicketController.h"
 
 
-@interface SearchResultsViewController : ViewController 
+@interface SearchResultsViewController : UITableViewController
 
 
 @property(strong,nonatomic)TicketController *ticketController;

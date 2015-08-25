@@ -17,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *trackingNumberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (weak, nonatomic) IBOutlet UIButton *clearButton;
+@property (weak, nonatomic) IBOutlet UIView *dateView;
+@property (weak, nonatomic) IBOutlet UIButton *dateButton;
+@property (weak, nonatomic) IBOutlet UIButton *selectDateButton;
 
 
 @end
@@ -45,32 +48,80 @@
     [navBorder setBackgroundColor:orange];
     [navigationBar addSubview:navBorder];
     
-    //set button border colors to theme orange
+    //set button border color to theme orange
     self.clearButton.layer.borderColor = orange.CGColor;
-//    self.searchButton.layer.borderColor = orange.CGColor;
+    self.dateButton.layer.borderColor = orange.CGColor;
+    self.selectDateButton.layer.borderColor = orange.CGColor;
+    
+    self.datePicker.tintColor = [UIColor colorWithRed:77/255. green:77/255. blue:77/255. alpha:1];
+
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     [self.searchButton setEnabled:YES];
-    
     self.datePicker.maximumDate = [NSDate date];
     self.datePicker.datePickerMode = UIDatePickerModeDate;
     self.datePicker.datePickerMode = daylight;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
 }
+
+-(void)dismissKeyboard {
+    
+    [self.trackingNumberTextField resignFirstResponder];
+}
+
+- (IBAction)clearButtonTapped:(id)sender {
+    self.trackingNumberTextField.text = @"";
+    self.datePicker.date = [NSDate date];
+    [self.dateButton setTitle:@"Select Date" forState:UIControlStateNormal];
+}
+
+- (IBAction)selectDateButtonPressed:(id)sender {
+    self.dateView.hidden = NO;
+    [self.dateButton setEnabled:NO];
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    animation.keyPath = @"position.y";
+    animation.fromValue = @(self.dateView.center.y);
+    animation.toValue = @(self.dateView.center.y - 310);
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    
+    [self.datePicker.layer addAnimation:animation forKey:@"moveUpAnimation"];
+    self.dateView.layer.position = CGPointMake(self.dateView.layer.position.x, self.dateView.layer.position.y - 310);
+}
+
+- (IBAction)dateSelectButtonPressed:(id)sender {
+    CABasicAnimation *animation = [CABasicAnimation animation];
+    animation.keyPath = @"position.y";
+    animation.fromValue = @(self.dateView.center.y);
+    animation.toValue = @(self.dateView.center.y + 310);
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    
+    [self.dateView.layer addAnimation:animation forKey:@"moveDownAnimation"];
+    self.dateView.layer.position = CGPointMake(self.dateView.layer.position.x, self.dateView.layer.position.y + 310);
+    
+    NSString *dateString;
+    NSDateFormatter *format = [NSDateFormatter new];
+    [format setDateStyle: NSDateFormatterLongStyle];
+    dateString = [format stringFromDate:self.datePicker.date];
+    
+    [self.dateButton setTitle:dateString forState:UIControlStateNormal];
+    [self.dateButton.titleLabel sizeToFit];
+    [self.dateButton setEnabled:YES];
+}
+
 - (IBAction)searchButtonPressed:(id)sender {
     [self.searchButton setEnabled:NO];
-
-    //creates a loading indicator
-    self.activityIndicator.center=self.view.center;
     
     [self.activityIndicator startAnimating];
     
@@ -81,12 +132,9 @@
     
     [[SearchViewDataSourceController sharedInstance]queryParseWithDate:timeStamp andTrackingNumber:self.trackingNumberTextField.text withCompletion:^{
         [timer invalidate];
-#pragma warning -need to check if query is complete, then send segue.
         [self performSegueWithIdentifier:@"searchResultsSegue" sender:self];
         [self.activityIndicator stopAnimating];
-        
     }];
-    
    
 }
 
@@ -99,16 +147,6 @@
         [self.activityIndicator stopAnimating];
 }
 
-- (IBAction)clearButtonTapped:(id)sender {
-    self.trackingNumberTextField.text = @"";
-    self.datePicker.date = [NSDate date];
-}
-
--(void)dismissKeyboard {
-   
-    [self.trackingNumberTextField resignFirstResponder];
-}
-
 - (NSDate *)dateAtBeginningOfDayForDate:(NSDate *)inputDate
 {
     // Use the user's current calendar and time zone
@@ -116,7 +154,7 @@
     NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
     [calendar setTimeZone:timeZone];
     
-    // Selectively convert the date components (year, month, day) of the input date
+    // Converts the date components (year, month, day) of the input date
     NSDateComponents *dateComps = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:inputDate];
     
     // Set the time components manually
@@ -136,21 +174,10 @@
     [format setDateStyle: NSDateFormatterMediumStyle];
     [format setTimeStyle: NSDateFormatterShortStyle];
     
-    dateString =  [format stringFromDate:date];
+    dateString = [format stringFromDate:date];
     
     return dateString;
     
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -14,6 +14,8 @@
 {
 //sets logo in navigation bar
     UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
+    //[UINavigationBar appearance]
+    
     navigationController.navigationItem.titleView = [[UIImageView alloc] initWithImage:logoImage];
     [navigationController.navigationItem.titleView setCenter:navigationController.navigationItem.titleView.center];
 

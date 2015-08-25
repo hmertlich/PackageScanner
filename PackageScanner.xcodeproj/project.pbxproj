@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2402483A1B8BDDE6002DF26F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 240248391B8BDDE6002DF26F /* Images.xcassets */; };
 		240C78461B7AA1A700709489 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 240C78451B7AA1A700709489 /* MessageUI.framework */; };
 		240C78491B7AAAC500709489 /* NewTicketController.m in Sources */ = {isa = PBXBuildFile; fileRef = 240C78481B7AAAC500709489 /* NewTicketController.m */; };
 		242A878A1B66980E00960E85 /* TicketController.m in Sources */ = {isa = PBXBuildFile; fileRef = 242A87891B66980E00960E85 /* TicketController.m */; };
@@ -36,7 +37,6 @@
 		24E171FA1B645044003F2102 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E171F91B645044003F2102 /* AppDelegate.m */; };
 		24E171FD1B645044003F2102 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E171FC1B645044003F2102 /* ViewController.m */; };
 		24E172001B645044003F2102 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24E171FE1B645044003F2102 /* Main.storyboard */; };
-		24E172021B645044003F2102 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24E172011B645044003F2102 /* Images.xcassets */; };
 		24E172051B645044003F2102 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 24E172031B645044003F2102 /* LaunchScreen.xib */; };
 		24E172111B645044003F2102 /* PackageScannerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E172101B645044003F2102 /* PackageScannerTests.m */; };
 		24E1721C1B6452AB003F2102 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24E1721B1B6452AB003F2102 /* SearchViewController.m */; };
@@ -56,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		240248391B8BDDE6002DF26F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		240C78451B7AA1A700709489 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		240C78471B7AAAC500709489 /* NewTicketController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewTicketController.h; sourceTree = "<group>"; };
 		240C78481B7AAAC500709489 /* NewTicketController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewTicketController.m; sourceTree = "<group>"; };
@@ -96,7 +97,6 @@
 		24E171FB1B645044003F2102 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		24E171FC1B645044003F2102 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		24E171FF1B645044003F2102 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		24E172011B645044003F2102 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		24E172041B645044003F2102 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		24E1720A1B645044003F2102 /* PackageScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PackageScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		24E1720F1B645044003F2102 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -224,9 +224,8 @@
 				24E172231B646CD1003F2102 /* Views */,
 				242A878B1B66983000960E85 /* Controllers */,
 				242A87871B6697E900960E85 /* Models */,
-				24E172011B645044003F2102 /* Images.xcassets */,
-				246B2D2B1B70412E00CE8A08 /* beep.mp3 */,
 				24E172031B645044003F2102 /* LaunchScreen.xib */,
+				240248391B8BDDE6002DF26F /* Images.xcassets */,
 				24E171F41B645044003F2102 /* Supporting Files */,
 			);
 			path = PackageScanner;
@@ -235,6 +234,7 @@
 		24E171F41B645044003F2102 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				246B2D2B1B70412E00CE8A08 /* beep.mp3 */,
 				24E171F51B645044003F2102 /* Info.plist */,
 				24E171F61B645044003F2102 /* main.m */,
 			);
@@ -263,12 +263,12 @@
 			children = (
 				24E171FB1B645044003F2102 /* ViewController.h */,
 				24E171FC1B645044003F2102 /* ViewController.m */,
-				24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */,
-				24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */,
-				24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */,
-				24C0A1811B6846D8001DBB24 /* SearchResultsViewController.m */,
 				24E1721A1B6452AB003F2102 /* SearchViewController.h */,
 				24E1721B1B6452AB003F2102 /* SearchViewController.m */,
+				24C0A1801B6846D8001DBB24 /* SearchResultsViewController.h */,
+				24C0A1811B6846D8001DBB24 /* SearchResultsViewController.m */,
+				24C0A1771B67FD2A001DBB24 /* DetailTicketViewController.h */,
+				24C0A1781B67FD2A001DBB24 /* DetailTicketViewController.m */,
 				24E1721D1B645648003F2102 /* NewTicketViewController.h */,
 				24E1721E1B645648003F2102 /* NewTicketViewController.m */,
 				246B2D281B703E1900CE8A08 /* ScanTrackingNumberViewController.h */,
@@ -359,9 +359,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				24E172001B645044003F2102 /* Main.storyboard in Resources */,
+				2402483A1B8BDDE6002DF26F /* Images.xcassets in Resources */,
 				24E172051B645044003F2102 /* LaunchScreen.xib in Resources */,
 				246B2D2C1B70412E00CE8A08 /* beep.mp3 in Resources */,
-				24E172021B645044003F2102 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

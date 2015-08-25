@@ -27,20 +27,19 @@
     
     return cell;
 }
+
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         Ticket *ticket = [[SearchViewDataSourceController sharedInstance].searchResults objectAtIndex:indexPath.row];
         
-            [ticket deleteInBackground];
+        [ticket deleteInBackground];
         
-            [[SearchViewDataSourceController sharedInstance].searchResults removeObjectAtIndex:indexPath.row];
+        [[SearchViewDataSourceController sharedInstance].searchResults removeObjectAtIndex:indexPath.row];
         
-            [tableView reloadData];
+        [tableView reloadData];
     }
-    
-    
 }
 
 @end

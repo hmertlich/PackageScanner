@@ -37,8 +37,6 @@
     
     if (trackingNumber !=nil) {
         self.getTickets = [PFQuery queryWithClassName:[Ticket parseClassName]];
-        [self.getTickets whereKey:@"TimeStamp" greaterThan:beginningOfDay];
-        [self.getTickets whereKey:@"TimeStamp" lessThan:endOfDay];
         [self.getTickets whereKey:@"TrackingNumber" containsString:trackingNumber];
         [self.getTickets orderByAscending:@"TimeStamp"];
         [self.getTickets findObjectsInBackgroundWithBlock:^(NSArray *results, NSError *error){

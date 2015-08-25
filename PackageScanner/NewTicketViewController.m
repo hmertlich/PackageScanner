@@ -15,18 +15,17 @@
 
 @interface NewTicketViewController ()<UIPickerViewDataSource, UIPickerViewDelegate,MFMailComposeViewControllerDelegate>
 
-@property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *scanButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
-@property (weak, nonatomic) IBOutlet UIButton *submitButton;
-@property (weak, nonatomic) IBOutlet UIButton *clearButton;
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
+
+@property (strong, nonatomic) IBOutlet UISegmentedControl *carrierSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *pickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *locationPicker;
 @property (weak, nonatomic) IBOutlet UITextField *optionalLocationTextField;
-@property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
+
 
 @property (strong, nonatomic) NSArray *locations;
 @property (strong, nonatomic) NSArray *carriers;
@@ -37,6 +36,7 @@
 @implementation NewTicketViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
@@ -45,14 +45,8 @@
     
     [self.view addGestureRecognizer:tap];
     
-    self.locationPicker.delegate = self;
-    
     //set contents of pickerView
     self.locations = @[@"Customer Cage", @"Shared Cage", @"Recieving Dock", @"Other"];
-    
-    self.scanButton.layer.cornerRadius = 10;
-    self.scanButton.clipsToBounds = YES;
-    
     
     UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:logoImage];
@@ -72,14 +66,16 @@
     //set border color to the theme orange
     self.locationButton.layer.borderColor = orange.CGColor;
     self.submitButton.layer.borderColor = orange.CGColor;
-    self.clearButton.layer.borderColor = orange.CGColor;
     self.selectButton.layer.borderColor = orange.CGColor;
+    
+    [[UITabBar appearance] setTintColor:orange];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    //set timeStamp
-    self.timeStampLabel.text = [self convertDatetoString:[NSDate date]];
+    //set timeStamp to current date and time
 }
+
+#pragma mark - Location Picker DataSource
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -104,6 +100,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 #pragma mark - Text editing methods. Resigning textField, Clear Button, Dismiss Keyboard
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -115,6 +112,8 @@
     self.trackingNumberTextField.text = @"";
     self.optionalLocationTextField.text = @"";
     [self.locationButton setTitle:@"Select Location" forState:UIControlStateNormal];
+    [self.optionalLocationTextField setHidden:YES];
+    [self.view setNeedsDisplay];
 }
 -(void)dismissKeyboard {
     
@@ -123,35 +122,32 @@
     [self.trackingNumberTextField resignFirstResponder];
 }
 
-- (IBAction)unwindToNewTicketViewController:(UIStoryboardSegue *)segue {
-    if ([segue.identifier isEqualToString:@"unwindToNewTicketView"]) {
-        
-        ScanTrackingNumberViewController *scanTrackingNumberView = segue.sourceViewController;
-        self.trackingNumberTextField.text = scanTrackingNumberView.trackingNumberString;
-        
-    }
-}
+#pragma mark - Location view animation/selection methods
+
 - (IBAction)selectLocation:(id)sender {
     self.pickerView.hidden = NO;
+    [self.locationButton setEnabled:NO];
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.y";
     animation.fromValue = @(self.pickerView.center.y);
-    animation.toValue = @(self.pickerView.center.y - 290);
+    animation.toValue = @(self.pickerView.center.y - 280);
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
     
     [self.pickerView.layer addAnimation:animation forKey:@"moveUpAnimation"];
-    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y - 290);
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y - 280);
     
 }
+
 - (IBAction)pickerDoneButtonPressed:(id)sender {
+    [self.locationButton setEnabled:YES];
     CABasicAnimation *animation = [CABasicAnimation animation];
     animation.keyPath = @"position.y";
     animation.fromValue = @(self.pickerView.center.y);
-    animation.toValue = @(self.pickerView.center.y + 290);
+    animation.toValue = @(self.pickerView.center.y + 280);
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     
     [self.pickerView.layer addAnimation:animation forKey:@"moveDownAnimation"];
-    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +290);
+    self.pickerView.layer.position = CGPointMake(self.pickerView.layer.position.x, self.pickerView.layer.position.y +280);
     
     //grab the index that is currently selected by the locationPicker
    
@@ -163,13 +159,18 @@
         [self.locationButton setTitle:[self.locations objectAtIndex:selectedLocation] forState:UIControlStateNormal];
         [self.locationButton.titleLabel sizeToFit];
     }
-
+    if ([[self.locations objectAtIndex:selectedLocation] isEqualToString:@"Other"]) {
+        [self.optionalLocationTextField setHidden:NO];
+    } else {
+        [self.optionalLocationTextField setHidden:YES];
+    }
 }
 
 #pragma mark - Save Button tasks
 
 - (IBAction)saveButtonPressed:(id)sender {
     
+    //check if a location has been selected
     if ([self.locationButton.titleLabel.text isEqualToString:@"Select Location"])
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Missing Information" message:@"Please Select a Location" preferredStyle:UIAlertControllerStyleAlert];
@@ -179,6 +180,7 @@
         [self.tabBarController presentViewController:alert animated:YES completion:nil];
         return;
     }
+    
     //grab the index that is currently selected by the locationPicker
     NSInteger selectedLocation = [self.locationPicker selectedRowInComponent:0];
     
@@ -186,9 +188,9 @@
     NSInteger selectedSegment = [self.carrierSegmentedControl selectedSegmentIndex];
 
     //grab the data
-   
     NSDate *timeStamp = [NSDate date];
     NSString *carrier =[self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
+#warning add employee name
     NSString *employee = @"";//self.employeeLabel.text;
     NSString *trackingNum = self.trackingNumberTextField.text;
     NSString *location = [self.locations objectAtIndex:selectedLocation];
@@ -199,27 +201,30 @@
     [newTicketController savePFObjectToParseWithTime:timeStamp andTrackingNumber:trackingNum andCarrier:carrier andEmployee:employee andLocation:location andSubLocation:subLocation];
     
     [self createEmailWithTicket:timeStamp andTrackingNumber:trackingNum andCarrier:carrier andEmployee:employee andLocation:location andSubLocation:subLocation];
-        
-    // Present mail view controller on screen
     
-    
-    //push an alert that tells the user the object was saved.
+    [self.optionalLocationTextField setHidden:YES];
     
     [self clearButtonTapped:sender];
-    
-    
 }
 
-- (void)createEmailWithTicket:(NSDate *)timeStamp andTrackingNumber:(NSString *)trackingNumber andCarrier:(NSString *)carrier andEmployee:(NSString *)employee andLocation:(NSString *)location andSubLocation:(NSString *)subLocation{
+#pragma mark - Email creation methods
+
+- (void)createEmailWithTicket:(NSDate *)timeStamp andTrackingNumber:(NSString *)trackingNumber andCarrier:(NSString *)carrier
+                  andEmployee:(NSString *)employee
+                  andLocation:(NSString *)location
+               andSubLocation:(NSString *)subLocation{
     
     //Create an email to send to c7.com
     // Email Subject
     NSString *emailTitle = [NSString stringWithFormat:@"Tracking #: %@",trackingNumber];
+    
     // Email Content
     NSString *messageBody = [NSString stringWithFormat:(@"Time Stamp: %@\n Carrier: %@\n Tracking #: %@\n Employee: %@\n Location: %@\n SubLocation: %@"),[self convertDatetoString:timeStamp],carrier,trackingNumber,employee,location,subLocation];
+    
     // To address
     NSArray *toRecipents = [NSArray arrayWithObject:@"support@c7.com"];
     
+    //Create email message
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
     mc.mailComposeDelegate = self;
     [mc setSubject:emailTitle];
@@ -269,9 +274,7 @@
     dateString =  [format stringFromDate:date];
 
     return dateString;
-    
 }
-
 
 #pragma mark - Navigation
 
@@ -283,5 +286,12 @@
      scanTrackingNumberView.carrier = [self.carrierSegmentedControl titleForSegmentAtIndex:selectedSegment];
  }
 
-
+- (IBAction)unwindToNewTicketViewController:(UIStoryboardSegue *)segue {
+    if ([segue.identifier isEqualToString:@"unwindToNewTicketView"]) {
+        
+        ScanTrackingNumberViewController *scanTrackingNumberView = segue.sourceViewController;
+        self.trackingNumberTextField.text = scanTrackingNumberView.trackingNumberString;
+        
+    }
+}
 @end

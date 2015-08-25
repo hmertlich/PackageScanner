@@ -3,7 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "searchButton.png"
+      "filename" : "search1X.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "search2X.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "search3X.png"
     }
   ],
   "info" : {

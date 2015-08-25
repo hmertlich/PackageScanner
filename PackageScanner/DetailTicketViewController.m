@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
     [self updateWithTicket:self.ticket];
     
     UIImage* logoImage = [UIImage imageNamed:@"navBarLogo"];
@@ -48,8 +49,7 @@
 
 - (void)updateWithTicket:(Ticket *)ticket{
     
-    NSTimeInterval timeZoneSeconds = [[NSTimeZone localTimeZone] secondsFromGMT];
-    NSDate *timeStamp = [[self.ticket objectForKey:@"TimeStamp"] dateByAddingTimeInterval:timeZoneSeconds+21600];
+    NSDate *timeStamp = [self.ticket objectForKey:@"TimeStamp"];
     
     self.carrierLabel.text = [self.ticket objectForKey:@"Carrier"];
     self.locationLabel.text = [self.ticket objectForKey:@"Location"];
@@ -57,8 +57,8 @@
     self.whoLabel.text = [self.ticket objectForKey:@"Employee"];
     self.dateLabel.text = [self convertDatetoString:timeStamp];
     self.trackingNumberLabel.text = [self.ticket objectForKey:@"TrackingNumber"];
-
 }
+
 - (NSString *)convertDatetoString:(NSDate *)date{
     NSString *dateString;
     
@@ -70,14 +70,5 @@
     return dateString;
     
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
